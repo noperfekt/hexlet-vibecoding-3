@@ -15,9 +15,17 @@
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta name="twitter:card" content="summary_large_image">
+  <script>
+    try {
+      var saved = localStorage.getItem('theme');
+      var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      document.documentElement.dataset.theme = dark ? 'dark' : 'light';
+    } catch (e) {}
+  </script>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Переключить тему"></button>
   <main class="card">
     <div class="avatar">А</div>
     <h1>Александер</h1>
@@ -34,5 +42,19 @@
       <a href="https://t.me/">Telegram</a>
     </nav>
   </main>
+  <script>
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    function render() {
+      btn.textContent = root.dataset.theme === 'dark' ? '☀️' : '🌙';
+    }
+    btn.addEventListener('click', function () {
+      var next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+      root.dataset.theme = next;
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      render();
+    });
+    render();
+  </script>
 </body>
 </html>
